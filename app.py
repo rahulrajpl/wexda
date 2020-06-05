@@ -8,7 +8,8 @@
 
     Reference:
     ----------
-    https://www.kaggle.com/pmarcelino/comprehensive-data-exploration-with-python/notebook
+    [1] https://www.kaggle.com/pmarcelino/comprehensive-data-exploration-with-python/notebook
+    [2] https://coolsymbol.com/emojis
 
 '''
 
