@@ -36,7 +36,10 @@ def main():
     uploaded_file = st.file_uploader('Upload CSV file to begin (Max file size allowed: 200MB)', type='csv')
     
     if uploaded_file is not None:
-        df = load_data(uploaded_file) 
+        try:
+            df = load_data(uploaded_file) 
+        except:
+            st.write('Invalid File')
         st.sidebar.title('Tools 🔧')  
         if st.checkbox('Show raw data', value=False):
             st.write(df)
@@ -79,11 +82,13 @@ def main():
 
             if st.sidebar.checkbox('Show Distribution 〽', False):
                 st.subheader(f'Distribution of {target_column}')
-                sns.distplot(df[target_column])
-                st.write("Skewness: %.3f" % df[target_column].skew())
-                st.write("Kurtosis: %.3f" % df[target_column].kurt())
-                st.pyplot()
-
+                try:
+                    sns.distplot(df[target_column])
+                    st.write("Skewness: %.3f" % df[target_column].skew())
+                    st.write("Kurtosis: %.3f" % df[target_column].kurt())
+                    st.pyplot()
+                except:
+                    st.write('Invalid Column')
 
             if st.sidebar.checkbox('Scatter Plot 📈', value=False):
                 scatter_cols = st.sidebar.multiselect('Select Column', list(df.columns), key='scatter_cols')
