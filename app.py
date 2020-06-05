@@ -35,10 +35,7 @@ def main():
     uploaded_file = st.file_uploader('Upload CSV file to begin (Max file size allowed: 200MB)', type='csv')
     
     if uploaded_file is not None:
-        try:
-            df = load_data(uploaded_file) 
-        except:
-            st.write('Invalid File')
+        df = load_data(uploaded_file) 
         st.sidebar.title('Tools 🔧')  
         if st.checkbox('Show raw data', value=False):
             st.write(df)
