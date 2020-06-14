@@ -16,7 +16,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import time
+import time, os
 import seaborn as sns
 import pandas_profiling
 import webbrowser
@@ -50,16 +50,18 @@ def main():
                 profiling_option = st.sidebar.selectbox('Select method of profiling', ('--select--','Minimal', 'Full Profiling(very slow)'))
                 if profiling_option == 'Minimal':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
-                        pandas_profiling.ProfileReport(df, minimal=True).to_file("report.php")
+                        pandas_profiling.ProfileReport(df, minimal=True).to_file("report.html")
                         url = "report.php"
+                        os.system("echo '<?php include_once(\"report.html\"); ?>' > report.php")
+                        os.system("echo '{}' > composer.json")
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
                     webbrowser.open(url,new=2)
                 elif profiling_option == 'Full Profiling(very slow)':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
-                        pandas_profiling.ProfileReport(df).to_file("report.php")
-                        url = "report.php"
+                        pandas_profiling.ProfileReport(df).to_file("report.html")
+                        url = "report.html"
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
