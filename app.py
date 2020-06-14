@@ -50,16 +50,16 @@ def main():
                 profiling_option = st.sidebar.selectbox('Select method of profiling', ('--select--','Minimal', 'Full Profiling(very slow)'))
                 if profiling_option == 'Minimal':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
-                        pandas_profiling.ProfileReport(df, minimal=True).to_file("report.html")
-                        url = "./report.html"
+                        pandas_profiling.ProfileReport(df, minimal=True).to_file("report.php")
+                        url = "report.php"
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
                     webbrowser.open(url,new=2)
                 elif profiling_option == 'Full Profiling(very slow)':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
-                        pandas_profiling.ProfileReport(df).to_file("report.html")
-                        url = "./report.html"
+                        pandas_profiling.ProfileReport(df).to_file("report.php")
+                        url = "report.php"
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
