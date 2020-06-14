@@ -16,6 +16,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import time
 import seaborn as sns
 import pandas_profiling
 import webbrowser
@@ -51,16 +52,18 @@ def main():
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
                         pandas_profiling.ProfileReport(df, minimal=True).to_file("report.html")
                         url = "report.html"
-                        webbrowser.open(url,new=2)
-                    st.success('Pandas Profiling Completed')
-                    st.balloons()
+                        st.balloons()
+                        st.success('Pandas Profiling Completed')
+                        time.sleep(2)
+                    webbrowser.open(url,new=2)
                 elif profiling_option == 'Full Profiling(very slow)':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
                         pandas_profiling.ProfileReport(df).to_file("report.html")
                         url = "report.html"
-                        webbrowser.open(url,new=2)
-                    st.success('Pandas Profiling Completed')
-                    st.balloons()
+                        st.balloons()
+                        st.success('Pandas Profiling Completed')
+                        time.sleep(2)
+                    webbrowser.open(url,new=2)
                 else:
                     st.info('Select the method for profiling')
             if st.sidebar.checkbox('Describe ✍', value=False):
