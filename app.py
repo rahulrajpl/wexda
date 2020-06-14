@@ -17,6 +17,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import seaborn as sns
+import pandas_profiling
+import webbrowser
 from matplotlib import pyplot as plt
 
 
@@ -36,12 +38,31 @@ def main():
     
     if uploaded_file is not None:
         df = load_data(uploaded_file) 
+        
         st.sidebar.title('Tools 🔧')  
         if st.checkbox('Show raw data', value=False):
             st.write(df)
 
         target_column = st.selectbox('Select Target Column', list(df.columns), key='target_column')
         if target_column is not None:
+            if st.sidebar.checkbox('One Click Pandas Profiling Report', key='one_click_report_btn'):
+                profiling_option = st.sidebar.selectbox('Select method of profiling', ('--select--','Minimal', 'Full Profiling(very slow)'))
+                if profiling_option == 'Minimal':
+                    with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
+                        pandas_profiling.ProfileReport(df, minimal=True).to_file("report.html")
+                        url = "report.html"
+                        webbrowser.open(url,new=2)
+                    st.success('Pandas Profiling Completed')
+                    st.balloons()
+                elif profiling_option == 'Full Profiling(very slow)':
+                    with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
+                        pandas_profiling.ProfileReport(df).to_file("report.html")
+                        url = "report.html"
+                        webbrowser.open(url,new=2)
+                    st.success('Pandas Profiling Completed')
+                    st.balloons()
+                else:
+                    st.info('Select the method for profiling')
             if st.sidebar.checkbox('Describe ✍', value=False):
                 st.markdown('## Data Description')
                 st.write(df.describe())
@@ -61,12 +82,10 @@ def main():
                 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
                 st.write(missing_data)
 
-
             if st.sidebar.checkbox('Value Counts 🔢', value=False):
                 st.markdown('## Value Counts')
                 col = st.selectbox('Select Column', list(df.columns), key='val_col')
                 st.write(df[col].value_counts())
-
 
             if st.sidebar.checkbox('Unique elements 🔗', value=False):
                 st.markdown('## Unique elements')
@@ -74,7 +93,6 @@ def main():
                     st.write(df.nunique())
                 col = st.selectbox('Show columnwise unique elements',list(df.columns),key='unique_col')
                 st.write(df[col].unique())
-
 
             if st.sidebar.checkbox('Show Distribution 〽', False):
                 st.subheader(f'Distribution of {target_column}')
@@ -84,7 +102,7 @@ def main():
                     st.write("Kurtosis: %.3f" % df[target_column].kurt())
                     st.pyplot()
                 except:
-                    st.write('Invalid Column')
+                    st.error('Invalid Column')
 
             if st.sidebar.checkbox('Scatter Plot 📈', value=False):
                 scatter_cols = st.sidebar.multiselect('Select Column', list(df.columns), key='scatter_cols')
@@ -95,8 +113,7 @@ def main():
                         data.plot.scatter(x=col, y=target_column, ylim=(0,800000))
                         st.pyplot()
                     except:
-                        st.write('Invalid column')
-
+                        st.error('Invalid column')
 
             if st.sidebar.checkbox('Box Plot 🈁', value=False):
                 box_cols = st.sidebar.multiselect('Select Column', list(df.columns), key='box_cols')
@@ -109,9 +126,8 @@ def main():
                         fig.axis(ymin=np.min(df[target_column]), ymax=np.max(df[target_column]))
                         st.pyplot()
                     except:
-                        st.write('Invalid column')
+                        st.error('Invalid column')
             
-
             if st.sidebar.checkbox('Pair Plot ➿', value=False):
                 pair_cols = st.sidebar.multiselect('Select Column', list(df.columns), key='pair_plot')
                 plot_size = st.sidebar.number_input('Select Plot size', 1.0, 5.0, step=0.5, key='plot_size', value=2.5)
@@ -124,7 +140,7 @@ def main():
                     sns.pairplot(df[cols], size = plot_size)
                     st.pyplot()
                 except:
-                    st.write('Invalid column')
+                    st.error('Invalid column')
 
             if st.sidebar.checkbox('Correlation matrix 🧮', value=False):
                 st.markdown('## Correlation matrix (heatmap style)')

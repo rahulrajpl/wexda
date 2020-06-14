@@ -14,6 +14,7 @@ Go to https://wexda.herokuapp.com/ and start using ;)
 - find unique values and its count
 - plot data via scatter, bar and pair plots
 - plot correlation matrix in heatmap style
+- One click pandas profiling (new feature🤳)
 
 ## License
 
