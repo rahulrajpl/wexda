@@ -51,7 +51,7 @@ def main():
                 if profiling_option == 'Minimal':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
                         pandas_profiling.ProfileReport(df, minimal=True).to_file("report.html")
-                        url = "report.html"
+                        url = "./report.html"
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
@@ -59,7 +59,7 @@ def main():
                 elif profiling_option == 'Full Profiling(very slow)':
                     with st.spinner('Running pandas_profiling... (it usually take atlest 5 minutes). To cancel, refresh the page'):
                         pandas_profiling.ProfileReport(df).to_file("report.html")
-                        url = "report.html"
+                        url = "./report.html"
                         st.balloons()
                         st.success('Pandas Profiling Completed')
                         time.sleep(2)
